@@ -16,9 +16,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/tiagomelo/go-clipboard/clipboard"
 )
 
 type Solvable interface {
@@ -65,19 +67,33 @@ func main() {
 	case 7:
 		solution = day7.Day7{}
 	default:
-		panic("Day not available")
+		log.Fatalf("Day %d not available", *day)
 	}
 
-	fmt.Printf("Day %v\n", *day)
+	log.Printf("Day %v\n", *day)
 
+	var sol func(*bufio.Scanner) int
+	inputScanner := bufio.NewScanner(inputFile)
 	switch *part {
 	case 1:
-		fmt.Printf("Part 1: %v\n", solution.Run1(bufio.NewScanner(inputFile)))
+		sol = solution.Run1
 	case 2:
-		fmt.Printf("Part 2: %v\n", solution.Run2(bufio.NewScanner(inputFile)))
+		sol = solution.Run2
 	default:
-		fmt.Printf("Unknown part %s", os.Args[1])
+		log.Fatalf("Unknown part %s", os.Args[1])
 	}
+
+	startTime := time.Now()
+	answer := sol(inputScanner)
+	timeTook := time.Since(startTime)
+
+	c := clipboard.New()
+
+	if err := c.CopyText(strconv.Itoa(answer)); err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Part %d: %d took %s\n", *part, answer, timeTook.String())
 }
 
 func createSolutionFolder() {

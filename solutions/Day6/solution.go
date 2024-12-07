@@ -114,14 +114,14 @@ func (_ Day6) Run2(s *bufio.Scanner) int {
 	for s.Scan() {
 		input = append(input, strings.Split(s.Text(), ""))
 	}
-	//optimizes solution (but was not my idea)
-	// startX, startY := findGuard(&input)
-	// run1(&input)
-	// input[startY][startX] = "^"
+	// optimizes solution (but was not my idea)
+	startX, startY := findGuard(&input)
+	run1(&input)
+	input[startY][startX] = "^"
 
 	for y := range input {
 		for x := range input[y] {
-			if input[y][x] == "." {
+			if input[y][x] == "X" { //in my solution then == "O"
 				c := deepCopy(input)
 				c[y][x] = "O"
 				a := run(c)

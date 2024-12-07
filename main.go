@@ -7,6 +7,7 @@ import (
 	day4 "AoC24/solutions/Day4"
 	day5 "AoC24/solutions/Day5"
 	day6 "AoC24/solutions/Day6"
+	day7 "AoC24/solutions/Day7"
 	"bufio"
 	"errors"
 	"flag"
@@ -61,6 +62,8 @@ func main() {
 		solution = day5.Day5{}
 	case 6:
 		solution = day6.Day6{}
+	case 7:
+		solution = day7.Day7{}
 	default:
 		panic("Day not available")
 	}

@@ -9,6 +9,7 @@ import (
 	day6 "AoC24/solutions/Day6"
 	day7 "AoC24/solutions/Day7"
 	day8 "AoC24/solutions/Day8"
+	day9 "AoC24/solutions/Day9"
 	"bufio"
 	"errors"
 	"flag"
@@ -69,6 +70,8 @@ func main() {
 		solution = day7.Day7{}
 	case 8:
 		solution = day8.Day8{}
+	case 9:
+		solution = day9.Day9{}
 	default:
 		log.Fatalf("Day %d not available", *day)
 	}

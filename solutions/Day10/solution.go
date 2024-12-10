@@ -15,26 +15,30 @@ type Point struct {
 type Map [][]int
 
 func (_ Day10) Run1(s *bufio.Scanner) int {
-	sum := 0
-	topographicMap := parseInput(s)
-	for _, s := range findPoints(0, topographicMap) {
-		sum += getNumRoutes(s, topographicMap, map[Point]bool{})
-	}
-
-	return sum
+	return solve(s, true)
 }
 
 func (_ Day10) Run2(s *bufio.Scanner) int {
+	return solve(s, false)
+}
+
+func solve(s *bufio.Scanner, part1 bool) int {
 	sum := 0
 	topographicMap := parseInput(s)
 	for _, s := range findPoints(0, topographicMap) {
-		sum += findNumPaths(s, s, topographicMap)
+		if part1 {
+			sum += getNumRoutes(s, topographicMap, map[Point]bool{}, part1)
+		} else {
+			// sum += getNumRoutes(s, topographicMap, map[Point]bool{}, part1) slower but less lines of code
+			sum += findNumUniqueRoutes(s, s, topographicMap)
+		}
 	}
 
 	return sum
+
 }
 
-func findNumPaths(start, before Point, m Map) int {
+func findNumUniqueRoutes(start, before Point, m Map) int {
 	if m[start.y][start.x] == 9 {
 		return 1
 	}
@@ -42,13 +46,13 @@ func findNumPaths(start, before Point, m Map) int {
 	sum := 0
 	for _, v := range getArround(start, m) {
 		if before != v && m[start.y][start.x]+1 == m[v.y][v.x] {
-			sum += findNumPaths(v, start, m)
+			sum += findNumUniqueRoutes(v, start, m)
 		}
 	}
 	return sum
 }
 
-func getNumRoutes(start Point, m Map, visited map[Point]bool) int {
+func getNumRoutes(start Point, m Map, visited map[Point]bool, part1 bool) int {
 	visited[start] = true
 	if m[start.y][start.x] == 9 {
 		return 1
@@ -56,8 +60,8 @@ func getNumRoutes(start Point, m Map, visited map[Point]bool) int {
 
 	sum := 0
 	for _, v := range getArround(start, m) {
-		if !visited[v] && m[start.y][start.x]+1 == m[v.y][v.x] {
-			sum += getNumRoutes(v, m, visited)
+		if (!part1 || !visited[v]) && m[start.y][start.x]+1 == m[v.y][v.x] {
+			sum += getNumRoutes(v, m, visited, part1)
 		}
 	}
 	return sum

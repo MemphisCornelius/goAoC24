@@ -1,15 +1,6 @@
 package main
 
 import (
-	day1 "AoC24/solutions/Day1"
-	day2 "AoC24/solutions/Day2"
-	day3 "AoC24/solutions/Day3"
-	day4 "AoC24/solutions/Day4"
-	day5 "AoC24/solutions/Day5"
-	day6 "AoC24/solutions/Day6"
-	day7 "AoC24/solutions/Day7"
-	day8 "AoC24/solutions/Day8"
-	day9 "AoC24/solutions/Day9"
 	"bufio"
 	"errors"
 	"flag"
@@ -30,8 +21,9 @@ type Solvable interface {
 	Run2(*bufio.Scanner) int
 }
 
-var day = flag.Int("d", time.Now().Day(), "day")
+var day = flag.Int("d", time.Now().Add(-6*time.Hour).Day(), "day")
 var part = flag.Int("p", 1, "part")
+var solutions map[int]Solvable
 
 func main() {
 	flag.Parse()
@@ -51,28 +43,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var solution Solvable
+	RegisterSolutions()
 
-	switch *day {
-	case 1:
-		solution = day1.Day1{}
-	case 2:
-		solution = day2.Day2{}
-	case 3:
-		solution = day3.Day3{}
-	case 4:
-		solution = day4.Day4{}
-	case 5:
-		solution = day5.Day5{}
-	case 6:
-		solution = day6.Day6{}
-	case 7:
-		solution = day7.Day7{}
-	case 8:
-		solution = day8.Day8{}
-	case 9:
-		solution = day9.Day9{}
-	default:
+	solution, ok := solutions[*day]
+	if !ok {
 		log.Fatalf("Day %d not available", *day)
 	}
 

@@ -3,6 +3,7 @@ package main
 import (
 	day1 "AoC24/solutions/Day1"
 	day10 "AoC24/solutions/Day10"
+	day11 "AoC24/solutions/Day11"
 	day2 "AoC24/solutions/Day2"
 	day3 "AoC24/solutions/Day3"
 	day4 "AoC24/solutions/Day4"
@@ -75,6 +76,8 @@ func main() {
 		solution = day9.Day9{}
 	case 10:
 		solution = day10.Day10{}
+	case 11:
+		solution = day11.Day11{}
 	default:
 		log.Fatalf("Day %d not available", *day)
 	}
